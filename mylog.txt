@@ -40,3 +40,37 @@ Starting my_function with arguments (1, 2), {}
 my_function successful, result: 3
 Starting my_function with arguments (1, 2), {}
 my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3
+Starting my_function with arguments (1, 2), {}
+my_function successful, result: 3

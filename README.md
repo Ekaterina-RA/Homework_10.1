@@ -28,4 +28,8 @@
 5. Написаны тесты для функций external_api и read_json_transactions с использованием Mock  и patch
 6. Для запуска и проверки успешной работы всех тестов выполните команду: pytest 
 
+##  Логирование:
+1. Добавлены логи для функций get_mask_card_number, get_mask_account в модуле masks;
+2. Добавлены логи для функций read_json_transactions в модуле utils;
+
 

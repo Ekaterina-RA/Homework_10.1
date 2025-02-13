@@ -8,13 +8,16 @@ def load_json(file_path):
     with open(file_path, "r", encoding="utf-8") as file:
         return json.load(file)
 
+
 def load_csv(file_path):
     with open(file_path, newline="", encoding="utf-8") as csvfile:
         return list(csv.DictReader(csvfile))
 
+
 def load_xlsx(file_path):
     df = pd.read_excel(file_path)
     return df.to_dict(orient="records")
+
 
 def filter_transactions(transactions, status):
     return [
@@ -23,8 +26,10 @@ def filter_transactions(transactions, status):
         if transaction.get("status", "").lower() == status.lower()
     ]
 
+
 def sort_transactions(transactions, ascending):
     return sorted(transactions, key=lambda x: x["date"], reverse=not ascending)
+
 
 def filter_by_keyword(transactions, keyword):
     return [

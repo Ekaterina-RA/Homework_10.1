@@ -3,8 +3,14 @@ from unittest.mock import mock_open, patch
 
 import pandas as pd
 
-from src.main import (filter_by_keyword, filter_transactions, load_csv,
-                      load_json, load_xlsx, sort_transactions)
+from src.main import (
+    filter_by_keyword,
+    filter_transactions,
+    load_csv,
+    load_json,
+    load_xlsx,
+    sort_transactions,
+)
 
 
 @patch(

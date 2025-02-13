@@ -1,195 +1,88 @@
-from src.generators import (
-    card_number_generator,
-    filter_by_currency,
-    transaction_descriptions,
-)
-from src.masks import get_mask_account, get_mask_card_number
-from src.processing import filter_by_state, sort_by_date
-from src.widget import get_date, mask_account_card
-from src.external_api import convert_to_rub
+import json
+import csv
+import pandas as pd
+from src.counter_transactions import transactions
 
 
-print(get_mask_card_number("7000792289606361"))
-print(get_mask_account("73654108430135874305"))
 
-print(mask_account_card("Visa Platinum 7000792289606361"))
-print(mask_account_card("Счет 73654108430135874305"))
-print(mask_account_card("Maestro 1596837868705199"))
-print(mask_account_card("Счет 64686473678894779589"))
+def load_json(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
+        return json.load(file)
 
-print(get_date("2024-03-11T02:26:18.671407"))
-print(get_date("2023-12-25T15:30:00.000000"))
+def load_csv(file_path):
+    with open(file_path, newline='', encoding='utf-8') as csvfile:
+        return list(csv.DictReader(csvfile))
 
-# Пример использования def filter_by_state and def sort_by_date:
-list_dict = [
-    {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-]
-print(filter_by_state(list_dict))
+def load_xlsx(file_path):
+    df = pd.read_excel(file_path)
+    return df.to_dict(orient='records')
 
-sort_list = [
-    {"id": 41428829, "state": "EXECUTED", "date": "2019-07-03T18:35:29.512364"},
-    {"id": 939719570, "state": "EXECUTED", "date": "2018-06-30T02:08:58.425572"},
-    {"id": 594226727, "state": "CANCELED", "date": "2018-09-12T21:27:25.241689"},
-    {"id": 615064591, "state": "CANCELED", "date": "2018-10-14T08:21:33.419441"},
-]
+def filter_transactions(transactions, status):
+    return [transaction for transaction in transactions if transaction.get('status', '').lower() == status.lower()]
 
-print(sort_by_date(sort_list))
-# Пример использования def filter_by_state and def sort_by_date:
-transactions = [
-    {
-        "id": 939719570,
-        "state": "EXECUTED",
-        "date": "2018-06-30T02:08:58.425572",
-        "operationAmount": {
-            "amount": "9824.07",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод организации",
-        "from": "Счет 75106830613657916952",
-        "to": "Счет 11776614605963066702",
-    },
-    {
-        "id": 142264268,
-        "state": "EXECUTED",
-        "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "79114.93",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188",
-    },
-    {
-        "id": 873106923,
-        "state": "EXECUTED",
-        "date": "2019-03-23T01:09:46.296404",
-        "operationAmount": {
-            "amount": "43318.34",
-            "currency": {"name": "руб.", "code": "RUB"},
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 44812258784861134719",
-        "to": "Счет 74489636417521191160",
-    },
-    {
-        "id": 895315941,
-        "state": "EXECUTED",
-        "date": "2018-08-19T04:27:37.904916",
-        "operationAmount": {
-            "amount": "56883.54",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод с карты на карту",
-        "from": "Visa Classic 6831982476737658",
-        "to": "Visa Platinum 8990922113665229",
-    },
-    {
-        "id": 594226727,
-        "state": "CANCELED",
-        "date": "2018-09-12T21:27:25.241689",
-        "operationAmount": {
-            "amount": "67314.70",
-            "currency": {"name": "руб.", "code": "RUB"},
-        },
-        "description": "Перевод организации",
-        "from": "Visa Platinum 1246377376343588",
-        "to": "Счет 14211924144426031657",
-    },
-]
+def sort_transactions(transactions, ascending):
+    return sorted(transactions, key=lambda x: x['date'], reverse=not ascending)
 
-usd_transactions = filter_by_currency(transactions, "USD")
-for i in range(2):
-    print(next(usd_transactions))
+def filter_by_keyword(transactions, keyword):
+    return [transaction for transaction in transactions if keyword.lower() in transaction.get('description', '').lower()]
 
-# # Пример использования def filter_by_currency
-transactions = [
-    {
-        "id": 939719570,
-        "state": "EXECUTED",
-        "date": "2018-06-30T02:08:58.425572",
-        "operationAmount": {
-            "amount": "9824.07",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод организации",
-        "from": "Счет 75106830613657916952",
-        "to": "Счет 11776614605963066702",
-    },
-    {
-        "id": 142264268,
-        "state": "EXECUTED",
-        "date": "2019-04-04T23:20:05.206878",
-        "operationAmount": {
-            "amount": "79114.93",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 19708645243227258542",
-        "to": "Счет 75651667383060284188",
-    },
-    {
-        "id": 873106923,
-        "state": "EXECUTED",
-        "date": "2019-03-23T01:09:46.296404",
-        "operationAmount": {
-            "amount": "43318.34",
-            "currency": {"name": "руб.", "code": "RUB"},
-        },
-        "description": "Перевод со счета на счет",
-        "from": "Счет 44812258784861134719",
-        "to": "Счет 74489636417521191160",
-    },
-    {
-        "id": 895315941,
-        "state": "EXECUTED",
-        "date": "2018-08-19T04:27:37.904916",
-        "operationAmount": {
-            "amount": "56883.54",
-            "currency": {"name": "USD", "code": "USD"},
-        },
-        "description": "Перевод с карты на карту",
-        "from": "Visa Classic 6831982476737658",
-        "to": "Visa Platinum 8990922113665229",
-    },
-    {
-        "id": 594226727,
-        "state": "CANCELED",
-        "date": "2018-09-12T21:27:25.241689",
-        "operationAmount": {
-            "amount": "67314.70",
-            "currency": {"name": "руб.", "code": "RUB"},
-        },
-        "description": "Перевод организации",
-        "from": "Visa Platinum 1246377376343588",
-        "to": "Счет 14211924144426031657",
-    },
-]
+def main():
+    print("Привет! Добро пожаловать в программу работы с банковскими транзакциями.")
+    print("Выберите необходимый пункт меню:")
+    print("1. Получить информацию о транзакциях из JSON-файла")
+    print("2. Получить информацию о транзакциях из CSV-файла")
+    print("3. Получить информацию о транзакциях из XLSX-файла")
 
-# # Пример использования def transaction_descriptions
-descriptions = transaction_descriptions(transactions)
-for _ in range(5):
-    print(next(descriptions))
+    choice = input("Пользователь: ")
 
-# Пример использования генератора card_number_generator
-for card_number in card_number_generator(1, 5):
-    print(card_number)
+    if choice == '1':
+        print('Для обработки выбран JSON-файл')
+    elif choice == '2':
+        print('Для обработки выбран CSV-файл')
+    elif choice == '3':
+        print('Для обработки выбран XLSX-файл')
+    else:
+        print("Некорректный выбор. Завершение программы.")
+        return
 
+    statuses = {'EXECUTED', 'CANCELED', 'PENDING'}
+    filtered_transactions = transactions
 
-transaction_usd = {"amount": 100, "currency": "USD"}
-transaction_eur = {"amount": 100, "currency": "EUR"}
-transaction_rub = {"amount": 100, "currency": "RUB"}
+    status = input("Введите статус, по которому необходимо выполнить фильтрацию. Доступные для фильтровки статусы: EXECUTED, CANCELED, PENDING\nПользователь: ")
+    if status.upper() in statuses:
+        print(f"Операции отфильтрованы по статусу \"{status.upper()}\"")
+    else:
+        print(f"Статус операции \"{status}\" недоступен.")
 
-print(convert_to_rub(transaction_usd))  # Сумма в рублях конвертированная из USD
-print(convert_to_rub(transaction_eur))  # Сумма в рублях конвертированная из EUR
-print(convert_to_rub(transaction_rub))  # Сумма в рублях
+    sort_choice = input("Отсортировать операции по дате? Да/Нет\nПользователь: ").strip().lower()
+    if sort_choice == 'да':
+        result = input("Отсортировать по возрастанию или по убыванию? \nПользователь: ").strip().lower()
+        if result == 'по возрастанию':
+            print('по возрастанию')
+        else:
+            print('по убыванию')
 
-from utils import read_json_transactions
+    currency_filter = input("Выводить только рублевые транзакции? Да/Нет\nПользователь: ").strip().lower()
+    if currency_filter == 'да':
+        filtered_transactions = [transaction for transaction in filtered_transactions if 'руб' in str(transaction.get('amount', ''))]
 
-file_path = "data/operations.json"
+    keyword_filter = input(
+        "Отфильтровать список транзакций по определенному слову в описании? Да/Нет\nПользователь: ").strip().lower()
+    if keyword_filter == 'да':
+        keyword = input("Введите слово для фильтрации по описанию: ")
+        filtered_transactions = filter_by_keyword(filtered_transactions, keyword)
 
-transactions = read_json_transactions(file_path)
-print(transactions)
+    print("Распечатываю итоговый список транзакций...")
+
+    if filtered_transactions:
+        print(f"Всего банковских операций в выборке: {len(filtered_transactions)}")
+        for transaction in filtered_transactions:
+            print(f"{transaction['date']} {transaction['description']}")
+            print(f"Счет {transaction['account']}")
+            print(f"Сумма: {transaction['amount']}")
+            print()
+    else:
+        print("Не найдено ни одной транзакции, подходящей под ваши условия фильтрации.")
+
+if __name__ == "__main__":
+    main()

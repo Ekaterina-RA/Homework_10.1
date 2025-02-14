@@ -1,13 +1,13 @@
-2025-02-10 20:58:19,145 - utils - DEBUG - Проверка существования файла: non_existent_file.json
-2025-02-10 20:58:19,145 - utils - WARNING - Файл отсутствует: non_existent_file.json
-2025-02-10 20:58:19,145 - utils - DEBUG - Проверка существования файла: valid_file.json
-2025-02-10 20:58:19,145 - utils - DEBUG - Открытие файла: valid_file.json
-2025-02-10 20:58:19,145 - utils - DEBUG - Чтение данных из файла прошло успешно.
-2025-02-10 20:58:19,145 - utils - INFO - Успешное чтение данных из файла: valid_file.json
-2025-02-10 20:58:19,160 - utils - DEBUG - Проверка существования файла: invalid_file.json
-2025-02-10 20:58:19,160 - utils - DEBUG - Открытие файла: invalid_file.json
-2025-02-10 20:58:19,160 - utils - ERROR - Ошибка декодирования JSON в файле invalid_file.json: Expecting value: line 1 column 1 (char 0)
-2025-02-10 20:58:19,160 - utils - DEBUG - Проверка существования файла: empty_object.json
-2025-02-10 20:58:19,160 - utils - DEBUG - Открытие файла: empty_object.json
-2025-02-10 20:58:19,160 - utils - DEBUG - Чтение данных из файла прошло успешно.
-2025-02-10 20:58:19,160 - utils - WARNING - Данные в файле empty_object.json не являются списком
+2025-02-13 21:46:10,573 - utils - DEBUG - Проверка существования файла: non_existent_file.json
+2025-02-13 21:46:10,573 - utils - WARNING - Файл отсутствует: non_existent_file.json
+2025-02-13 21:46:10,575 - utils - DEBUG - Проверка существования файла: valid_file.json
+2025-02-13 21:46:10,575 - utils - DEBUG - Открытие файла: valid_file.json
+2025-02-13 21:46:10,578 - utils - DEBUG - Чтение данных из файла прошло успешно.
+2025-02-13 21:46:10,578 - utils - INFO - Успешное чтение данных из файла: valid_file.json
+2025-02-13 21:46:10,579 - utils - DEBUG - Проверка существования файла: invalid_file.json
+2025-02-13 21:46:10,579 - utils - DEBUG - Открытие файла: invalid_file.json
+2025-02-13 21:46:10,579 - utils - ERROR - Ошибка декодирования JSON в файле invalid_file.json: Expecting value: line 1 column 1 (char 0)
+2025-02-13 21:46:10,579 - utils - DEBUG - Проверка существования файла: empty_object.json
+2025-02-13 21:46:10,579 - utils - DEBUG - Открытие файла: empty_object.json
+2025-02-13 21:46:10,579 - utils - DEBUG - Чтение данных из файла прошло успешно.
+2025-02-13 21:46:10,589 - utils - WARNING - Данные в файле empty_object.json не являются списком
